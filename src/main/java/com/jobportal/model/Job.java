@@ -1,6 +1,8 @@
 package com.jobportal.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -9,15 +11,16 @@ import jakarta.persistence.Table;
 public class Job {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String title;
     private String company;
     private String location;
 
     public Job(){}
 
-    public Job(int id,String title,String company,String location){
-        this.id=id;
+    public Job(String title,String company,String location){
         this.title=title;
         this.company=company;
         this.location=location;

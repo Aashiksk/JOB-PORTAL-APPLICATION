@@ -1,58 +1,124 @@
-console.log("Job Portal Loaded");
-
 const API_URL = "http://localhost:9090/jobs";
 
-window.onload = function () {
-    loadJobs();
-};
+async function loadJobs() {
+    try {
+        const response = await fetch(API_URL);
+        const jobs = await response.json();
 
-function loadJobs() {
+        const container = document.getElementById("jobsContainer");
+        container.innerHTML = "";
 
-    fetch(API_URL)
-        .then(response => response.json())
-        .then(data => {
-
-            const container = document.getElementById("jobsContainer");
-
-            container.innerHTML = "";
-
-            data.forEach(job => {
-
-                const jobCard = `
+        jobs.forEach(job => {
+            const jobCard = `
                 <div class="job-card">
-
                     <h3>${job.title}</h3>
-
                     <p>Company: ${job.company}</p>
                     <p>Location: ${job.location}</p>
-                    <p>Salary: ${job.salary}</p>
 
-                    <button class="btn" onclick="applyJob(${job.id})">
-                        Apply
-                    </button>
-
-                    <button class="save-btn" onclick="saveJob('${job.title}')">
-                        Save
-                    </button>
-
+                    <button class="btn" onclick="applyJob(${job.id})">Apply</button>
+                    <button class="save-btn" onclick="saveJob('${job.title}')">Save</button>
+                    <button class="btn" onclick="deleteJob(${job.id})">Delete</button>
+                    <button class="btn" onclick="editJob(${job.id}, '${job.title}', '${job.company}', '${job.location}')">Edit</button>
                 </div>
-                `;
+            `;
 
-                container.innerHTML += jobCard;
-
-            });
-
-        })
-        .catch(error => {
-            console.error("Error loading jobs:", error);
+            container.innerHTML += jobCard;
         });
 
+    } catch (error) {
+        console.error("Error loading jobs:", error);
+    }
 }
 
-function saveJob(jobName) {
-    alert(jobName + " saved!");
+// Call function when page loads
+loadJobs();
+
+function applyJob(id) {
+    alert("Apply for Job ID: " + id);
 }
 
-function applyJob(jobId) {
-    window.location.href = "apply.html?jobId=" + jobId;
+async function addJob(event) {
+    event.preventDefault();
+
+    const job = {
+        title: document.getElementById("title").value,
+        company: document.getElementById("company").value,
+        location: document.getElementById("location").value
+    };
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(job)
+        });
+
+        if (response.ok) {
+            alert("Job Added Successfully ✅");
+        } else {
+            alert("Error adding job ❌");
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// delete jobs
+async function deleteJob(id) {
+    try {
+        const response = await fetch(`http://localhost:9090/jobs/${id}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {
+            alert("Job Deleted ✅");
+            loadJobs(); // refresh list
+        } else {
+            alert("Error deleting job ❌");
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// edit jobs
+function editJob(id, title, company, location) {
+    const newTitle = prompt("Enter new title:", title);
+    const newCompany = prompt("Enter new company:", company);
+    const newLocation = prompt("Enter new location:", location);
+
+    if (newTitle && newCompany && newLocation) {
+        updateJob(id, newTitle, newCompany, newLocation);
+    }
+}
+
+// update jobs
+async function updateJob(id, title, company, location) {
+    try {
+        const response = await fetch(`http://localhost:9090/jobs/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                company: company,
+                location: location
+            })
+        });
+
+        if (response.ok) {
+            alert("Job Updated ✅");
+            loadJobs(); // refresh list
+        } else {
+            alert("Error updating job ❌");
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
 }
