@@ -11,19 +11,17 @@
 
 <h2>Create Account</h2>
 
-<form>
-
-<input type="text" placeholder="Full Name" required>
-
-<input type="email" placeholder="Email" required>
-
-<input type="password" placeholder="Password" required>
-
+<form onsubmit="registerUser(event)">
+<input type="text" id="name" placeholder="Full Name" required>
+<input type="email" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Password" required>
 <button class="btn">Register</button>
-
 </form>
+
 
 </div>
 
 </body>
 </html>
+
+<script src="script.js"></script>

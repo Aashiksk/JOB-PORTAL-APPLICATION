@@ -11,15 +11,13 @@
 
 <h2>Login</h2>
 
-<form>
-
-<input type="email" placeholder="Email" required>
-
-<input type="password" placeholder="Password" required>
-
+<form onsubmit="loginUser(event)">
+<input type="email" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Password" required>
 <button class="btn">Login</button>
-
 </form>
+
+<script src="script.js"></script>
 
 <p>Don't have an account?</p>
 <a href="register.html">Register</a>
@@ -28,3 +26,4 @@
 
 </body>
 </html>
+

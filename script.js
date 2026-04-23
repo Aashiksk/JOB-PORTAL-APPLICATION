@@ -122,3 +122,48 @@ async function updateJob(id, title, company, location) {
         console.error(error);
     }
 }
+
+// REGISTER
+async function registerUser(event) {
+    event.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
+
+    const res = await fetch("http://localhost:9090/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    });
+
+    alert(await res.text());
+    if (msg === "User Registered Successfully") {
+        window.location.href = "login.html";
+    }
+}
+
+// LOGIN
+async function loginUser(event) {
+    event.preventDefault();
+
+    const data = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
+
+    const res = await fetch("http://localhost:9090/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    });
+
+    const msg = await res.text();
+    alert(msg);
+
+    if (msg === "Login Successful") {
+        window.location.href = "dashboard.html";
+    }
+}
