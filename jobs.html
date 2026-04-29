@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<script>
+if (!localStorage.getItem("isLoggedIn")) {
+    alert("Please login first!");
+    window.location.href = "login.html";
+}
+</script>
 <html>
 <head>
 <title>Jobs</title>
@@ -11,7 +17,7 @@
 <h1>JobPortal</h1>
 
 <nav>
-<a href="index.html">Home</a>
+<!-- <a href="index.html">Home</a> -->
 <a href="jobs.html">Jobs</a>
 <a href="post-job.html">Post Jobs</a>
 </nav>
@@ -51,5 +57,6 @@
 <div class="jobs-container" id="jobsContainer">
 </div> 
 <script src="script.js"></script>
+
 </body>
 </html>

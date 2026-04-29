@@ -15,10 +15,12 @@ async function loadJobs() {
                     <p>Company: ${job.company}</p>
                     <p>Location: ${job.location}</p>
 
+                    <a href="apply.html"> 
                     <button class="btn" onclick="applyJob(${job.id})">Apply</button>
+                    </a>
                     <button class="save-btn" onclick="saveJob('${job.title}')">Save</button>
-                    <button class="btn" onclick="deleteJob(${job.id})">Delete</button>
-                    <button class="btn" onclick="editJob(${job.id}, '${job.title}', '${job.company}', '${job.location}')">Edit</button>
+                    <!-- <button class="btn" onclick="deleteJob(${job.id})">Delete</button> 
+                    <button class="btn" onclick="editJob(${job.id}, '${job.title}', '${job.company}', '${job.location}')">Edit</button> -->
                 </div>
             `;
 
@@ -165,5 +167,26 @@ async function loginUser(event) {
 
     if (msg === "Login Successful") {
         window.location.href = "dashboard.html";
+    }
+}
+
+localStorage.setItem("isLoggedIn", "true");
+
+function logout() {
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "index.html";
+}
+
+function saveJob(jobName) {
+
+    let savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
+
+    // avoid duplicates
+    if (!savedJobs.includes(jobName)) {
+        savedJobs.push(jobName);
+        localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
+        alert(jobName + " saved!");
+    } else {
+        alert("Already saved!");
     }
 }

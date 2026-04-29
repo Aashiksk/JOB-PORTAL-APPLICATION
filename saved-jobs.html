@@ -1,0 +1,14 @@
+<h2>Saved Jobs</h2>
+<div id="savedJobsContainer"></div>
+
+<script>
+let jobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
+
+let container = document.getElementById("savedJobsContainer");
+
+jobs.forEach(job => {
+    let div = document.createElement("div");
+    div.innerHTML = "<p>" + job + "</p>";
+    container.appendChild(div);
+});
+</script>
